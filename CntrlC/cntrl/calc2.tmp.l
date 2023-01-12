@@ -4,7 +4,7 @@
 %}
 
 ws  [ \t\n]
-symbol [,();]
+symbol [();]
 digit   [0-9]
 other .
 
@@ -16,8 +16,16 @@ other .
 "*"         { yylval.ival = MUL; return(MULOP);}
 "/"         { yylval.ival = DIV; return(MULOP);}
 "%"         { yylval.ival = MOD; return(MULOP);}
+"exp"       { yylval.ival = EXP; return(FUNCOP); }
+"log"       { yylval.ival = LOG; return(FUNCOP); }
 "sqrt"      { yylval.ival = SQRT;return(FUNCOP); }
-"max"      { yylval.ival = MAX;return(COMPFUNCOP); }
+"max"       { yylval.ival = MAX; return(COMPFUNCOP); }
+"min"       { yylval.ival = MIN; return(COMPFUNCOP); }
+"!"         { yylval.ival = FACTORIAL; return(FUNCOP); }
+"pi"        { yylval.ival = PI; return(NUM);}
+"e"         { yylval.ival = E; return(NUM);}
+"abs"       {yylval.ival = ABS; return(FUNCOP);}
+"degree"        {yylval.ival = DEGREE;  return(FUNCOP);}
 
 {digit}+    { sscanf(yytext, "%d", &yylval.ival); return(NUM);}
 

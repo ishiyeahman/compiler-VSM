@@ -40,7 +40,12 @@ int main(int argc, char *argv[])
       if (StatSW) ExecReport(); }                   /* 実行状況の報告 */
     else
       printf("Execution suppressed\n");}
+
+
+    // output object code
+    outObjectCode();
 }
+
 
 static void SetUpOpt(int argc, char *argv[])
 {

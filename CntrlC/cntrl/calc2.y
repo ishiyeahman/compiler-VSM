@@ -17,26 +17,31 @@ void exit(int);
 double degree(double rad);
 %}
 
-/* %union{
+
+%union{
     int ival;
     double rval;
-} */
+}
 
-%token EXP LOG SQRT MAX MIN FACTORIAL PI E ABS DEGREE
-%token NUM
+/* %token <ival> EXP LOG SQRT MAX MIN FACTORIAL PI E ABS DEGREE */
+%token  <ival> NUM
+
+
 
 /* %token <ival> INTC
 %token <rval> REALC */
 
 /* %type  <ival> program expr  expr_list  */
+%type  <ival> expr
 
 %right '='
-%left ADDOP
-%left MULOP
-%left FUNCOP
-%left COMPFUNCOP
-%right UMINUS
-/* %start line  */
+%left <ival> ADDOP
+%left <ival> MULOP
+%left <ival> FUNCOP
+%left <ival> COMPFUNCOP
+%right <ival> UMINUS
+
+%start program
 
 %%
 program : expr_list     {Pout(HALT); }

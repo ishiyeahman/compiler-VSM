@@ -39,47 +39,35 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     EXP = 258,
-     LOG = 259,
-     SQRT = 260,
-     MAX = 261,
-     MIN = 262,
-     FACTORIAL = 263,
-     PI = 264,
-     E = 265,
-     ABS = 266,
-     DEGREE = 267,
-     NUM = 268,
-     ADDOP = 269,
-     MULOP = 270,
-     FUNCOP = 271,
-     COMPFUNCOP = 272,
-     UMINUS = 273
+     NUM = 258,
+     ADDOP = 259,
+     MULOP = 260,
+     FUNCOP = 261,
+     COMPFUNCOP = 262,
+     UMINUS = 263
    };
 #endif
 /* Tokens.  */
-#define EXP 258
-#define LOG 259
-#define SQRT 260
-#define MAX 261
-#define MIN 262
-#define FACTORIAL 263
-#define PI 264
-#define E 265
-#define ABS 266
-#define DEGREE 267
-#define NUM 268
-#define ADDOP 269
-#define MULOP 270
-#define FUNCOP 271
-#define COMPFUNCOP 272
-#define UMINUS 273
+#define NUM 258
+#define ADDOP 259
+#define MULOP 260
+#define FUNCOP 261
+#define COMPFUNCOP 262
+#define UMINUS 263
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 21 "calc2.y"
+{
+    int ival;
+    double rval;
+}
+/* Line 1529 of yacc.c.  */
+#line 70 "y.tab.h"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1

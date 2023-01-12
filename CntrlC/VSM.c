@@ -1,6 +1,7 @@
 /* プログラム 6.4 : VSMシミュレータ（VSM.c，109ページ） */
 
 #include <stdio.h>
+#include <math.h>
 #include "VSM.h"
 
 void yyerror(const char *s);
@@ -22,7 +23,7 @@ char *Scode[] = {                                /* 表示用の操作コード 
                  "copy",   "push",  "push-i", "remove", "pop",  " ++",
                  " --",    "setFR", "++FR",   "--FR",   "jump", "<0 ?",
                  "<=0 ?",  "==0 ?", "!=0 ?",  ">=0 ?",  ">0 ?", "call",
-                 "return", "halt",  "input",  "output" };
+                 "return", "halt",  "input",  "output", "sqrt", "max" };
 
 static void PrintIns(int loc)                    /* 命令の記号編集と */
 {                                                /* 表示 */
@@ -130,12 +131,15 @@ int StartVSM(int StartAddr, int TraceSW)         /* VSMの命令実行 */
       case BEQ:    if (Stack[SP--] == 0) Pctr = addr;        continue; 
       case BNE:    if (Stack[SP--] != 0) Pctr = addr;        continue; 
       case BGE:    if (Stack[SP--] >= 0) Pctr = addr;        continue; 
-      case BGT:    if (Stack[SP--] >  0) Pctr = addr;        continue; 
+      case BGT:    if (Stack[SP--] >  0) Pctr =
+       addr;        continue; 
       case CALL:   Stack[++SP] = Pctr; Pctr = addr; CallC++; continue;
       case RET:    Pctr = Stack[SP--];                       continue;
       case HALT:                                             return 0;
       case INPUT:  scanf("%d", &Dseg[Stack[SP--]]);          continue;
       case OUTPUT: printf("%15d\n", Stack[SP--]);            continue;
+      case SQRT:  Stack[SP] =  sqrt(Stack[SP]);              continue;
+      case MAX:  Stack[SP-1] =  fmax(Stack[SP], Stack[SP-1]);              continue;
       default:
         printf("Illegal Op. code at location %d\n", Pctr);   return -4;
       }
@@ -157,4 +161,20 @@ void ExecReport(void)                            /* 実行データの表示 */
   printf("Max Frame Size:  %10d bytes\n", DSEG_SIZE - MinFR);
   printf("Function calls:  %10d times\n", CallC);
   printf("Execution Count: %10d ins. \n\n", InsCount);
+}
+
+
+void outObjectCode(){
+   FILE *fp;
+   int i = 0;
+
+    fp = fopen("out.o", "w");
+    while(i < Pctr){
+      fprintf(fp, "%d,%d,%d\n",  Iseg[i].Op, Iseg[i].Reg , Iseg[i].Addr);
+      i++;
+    }
+    
+    fclose(fp);
+
+
 }
