@@ -15,11 +15,9 @@ int readObject(char fileName[]){
     FILE *fp;
 
     fp = fopen(fileName, "r");
-
-    while (fscanf(fp, "%d,%d,%d", &Iseg.Op, &Iseg.Reg, &Iseg.Addr) != EOF){
+    while (fscanf(fp, "%d,%d,%lf", &Iseg.Op, &Iseg.Reg, &Iseg.Addr) != EOF){
         SetI(Iseg.Op, Iseg.Reg, Iseg.Addr);   
     }
-
     fclose(fp); 
 
     return 0;

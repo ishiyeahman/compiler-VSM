@@ -13,4 +13,3 @@ for(i = 3; i <= N; i++) {
    }
    if (j*j > i) write i;
 }
-

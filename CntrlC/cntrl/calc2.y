@@ -13,7 +13,6 @@ int arraySize =  sizeof(usingChar) / sizeof(char);
 int isUsedChar(int);
 void exit(int);
 
-
 double degree(double rad);
 %}
 
@@ -21,24 +20,42 @@ double degree(double rad);
 %union{
     int ival;
     double rval;
+    char *Name;
 }
 
 /* %token <ival> EXP LOG SQRT MAX MIN FACTORIAL PI E ABS DEGREE */
-%token  <ival> NUM
+/* %token  <rval> NUM */
 
 
+%token        TYPE IF ELSE WHILE DO FOR
+%token        SWITCH CASE DEFAULT BREAK CONTI READ WRITE
+%token <ival>  RELOP ADDOP MULOP PPMM NUM
+%token <Name> ID
 
-/* %token <ival> INTC
-%token <rval> REALC */
+%token <ival> INTC
+%token <rval> REALC 
 
 /* %type  <ival> program expr  expr_list  */
-%type  <ival> expr
+%type  <rval> expr 
+%type <rval> expr_list
+%type <rval> program
 
 %right '='
+
+%right '='
+%right '?' ':'
+%left  LOR
+%left  LAND
+%left  RELOP
+%left  ADDOP
+%left  MULOP
+%right '!' PPMM UM
+%left  POSOP
 %left <ival> ADDOP
 %left <ival> MULOP
 %left <ival> FUNCOP
 %left <ival> COMPFUNCOP
+%left <ival> MATHCHAR
 %right <ival> UMINUS
 
 %start program
@@ -59,27 +76,8 @@ expr    :   expr ADDOP expr     { Pout($2); }
         |   COMPFUNCOP '(' expr ',' expr ')'    { Pout($1); }
         |   '(' expr')'FUNCOP                   { Pout($4); } 
         |   ADDOP expr  %prec UMINUS { if( $1 == SUB) Pout(CSIGN); }
-        |   NUM             { Cout(PUSHI, $1); }
+        |   MATHCHAR             {   Pout($1); }
+        |   INTC                {  { Cout(PUSHI, (double)$1); } }
+        |   REALC               {  { Cout(PUSHI, $1); } }
         ;
 %%
-/* 
-#include <ctype.h>
-#define TraceSW 0
-
-int main(){
-    SetPC(0);
-    yyparse();
-    DumpIseg(0, PC()-1);
-    printf("[calc2.y] Enter execution phrase\n");
-    if (StartVSM(0, TraceSW) != 0){
-        printf("[calc2.y] Execution aborted\n");
-    }
-}
-
-void yyerror( char *msg){
-    printf("%s\n", msg);
-}
-
-double degree(double rad){
-    return rad*180/M_PI;
-} */
